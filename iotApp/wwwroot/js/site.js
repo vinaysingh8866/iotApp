@@ -1,8 +1,5 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
 const deviceId = document.getElementById("deviceId")
 const deviceType = document.getElementById("deviceType")
 const deviceValue = document.getElementById("deviceValue")
@@ -19,4 +16,7 @@ addBtn.addEventListener('click', (e) => {
         value: deviceValue.value
     })
 })
+
+
+// Write your JavaScript code.
 
