@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace iotApp.Pages
+namespace iotWebApp.Pages
 {
     public class IndexModel : PageModel
     {

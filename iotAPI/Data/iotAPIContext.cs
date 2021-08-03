@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using iotAPI.Models;
 
-namespace FirstASPNetCoreWebsite.Context
+namespace iotAPI.Data
 {
-    public class DataContext : DbContext
+    public class iotAPIContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options)
+        public iotAPIContext (DbContextOptions<iotAPIContext> options)
             : base(options)
         {
-
         }
-        public DbSet<Devices> Devices { get; set; }
+
+        public DbSet<iotAPI.Models.Devices> Devices { get; set; }
     }
 }
