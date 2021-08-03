@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iotAPI", "iotAPI\iotAPI.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iotTests", "iotTests\iotTests.csproj", "{045A06F0-CFEA-4F8B-831F-B4DF7D9CAAB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iotWebApp", "iotWebApp\iotWebApp.csproj", "{C080490F-96C6-4D71-93EC-9BD3D4C9B817}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{045A06F0-CFEA-4F8B-831F-B4DF7D9CAAB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{045A06F0-CFEA-4F8B-831F-B4DF7D9CAAB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{045A06F0-CFEA-4F8B-831F-B4DF7D9CAAB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C080490F-96C6-4D71-93EC-9BD3D4C9B817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C080490F-96C6-4D71-93EC-9BD3D4C9B817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C080490F-96C6-4D71-93EC-9BD3D4C9B817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C080490F-96C6-4D71-93EC-9BD3D4C9B817}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
