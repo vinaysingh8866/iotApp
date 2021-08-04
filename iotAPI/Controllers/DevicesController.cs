@@ -29,10 +29,10 @@ namespace iotAPI.Controllers
         }
 
         // GET: api/Devices/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Devices>> GetDevices(int id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult<List<Devices>>> GetDevices(String username)
         {
-            var devices = await _context.Devices.FindAsync(id);
+            var devices = _context.Devices.Where(x => x.UserName==username ).ToList();
 
             if (devices == null)
             {
