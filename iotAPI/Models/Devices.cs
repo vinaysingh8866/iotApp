@@ -14,7 +14,7 @@ namespace iotAPI.Models
         
         [Key]
         public int ID { get; set; }
-
+        
         public string UserName { get; set; }
 
         public string deviceType { get; set; }
