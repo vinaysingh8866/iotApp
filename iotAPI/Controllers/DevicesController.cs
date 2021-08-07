@@ -10,7 +10,7 @@ using iotAPI.Models;
 
 namespace iotAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class DevicesController : ControllerBase
     {
@@ -25,6 +25,7 @@ namespace iotAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Devices>>> GetDevices()
         {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             return await _context.Devices.ToListAsync();
         }
 
@@ -78,10 +79,29 @@ namespace iotAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Devices>> PostDevices(Devices devices)
         {
+            
             _context.Devices.Add(devices);
             await _context.SaveChangesAsync();
-
+            Response.Headers.Add("Access-Control-Allow-Origin", "https://localhost:5001");
             return CreatedAtAction("GetDevices", new { id = devices.ID }, devices);
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult<Devices>> AddDeviceDB(String name, String type, String url)
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "https://localhost:5001");
+            var Device = new Devices();
+            Device.UserName = name;
+            Device.deviceType = type;
+            Device.deviceDataUrl = url;
+
+            _context.Devices.Add(Device);
+            await _context.SaveChangesAsync();
+
+
+            return CreatedAtAction("GetDevices", new { id = 0 }, Device);
+
         }
 
         // DELETE: api/Devices/5

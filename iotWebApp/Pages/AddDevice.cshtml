@@ -1,0 +1,55 @@
+﻿@page
+@model iotWebApp.Pages.AddDeviceModel
+@{
+}
+<div class="main-container-adddevice">
+    <div style="display:flex;flex-direction:row;align-items:center; align-content:center; justify-content:space-between;padding-top:1%;padding-left:10%">
+        <div>
+            <input id="deviceTypeLight" type="radio" name="deviceType">
+            <label for="deviceTypeLight">Light</label>
+        </div>
+        <div>
+            <input id="deviceTypeThermostat" type="radio" name="deviceType">
+            <label for="deviceTypeThermostat">Thermostat</label>
+        </div>
+        <div>
+            <input id="deviceTypeCurtain" type="radio" name="deviceType">
+            <label for="deviceTypeCurtain">Curtain</label>
+        </div>
+    </>
+    <div id="qresult">
+
+    </div>
+
+
+
+</div>
+</div>
+<script>
+    
+    fetch(`https://localhost:44318/Devices/AddDeviceDB?name=12&type=12&url=12`,{
+    mode:'no-cors',
+    })
+    .then((response) => response.text())
+    .catch((error) => {
+                    
+    })
+    .then((body) => {
+        console.log(body)
+    });
+
+
+    async function getData(){
+
+        const result = await fetch('https://localhost:44318/Devices/GetDevices')
+        .then((response) =>  
+            response.text()
+            );
+        const textArea = document.getElementById("qresult");
+        textArea.innerHTML = result;
+    } 
+    getData()
+    
+
+</script>
+
