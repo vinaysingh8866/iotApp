@@ -17,26 +17,21 @@
             <label for="deviceTypeCurtain">Curtain</label>
         </div>
     </>
-    <div id="qresult">
-
-    </div>
-
+    <br><br/>
+    
+<button onclick="setData()">Create New</button>
 
 
 </div>
+
+    <div id="qresult" style="padding:10%">
+
+    </div>
 </div>
 <script>
     
-    fetch(`https://localhost:44318/Devices/AddDeviceDB?name=12&type=12&url=12`,{
-    mode:'no-cors',
-    })
-    .then((response) => response.text())
-    .catch((error) => {
-                    
-    })
-    .then((body) => {
-        console.log(body)
-    });
+
+    
 
 
     async function getData(){
@@ -48,8 +43,21 @@
         const textArea = document.getElementById("qresult");
         textArea.innerHTML = result;
     } 
-    getData()
     
+    function setData(){
+    fetch(`https://localhost:44318/Devices/AddDeviceDB?name=12&type=12&url=12`,{
+        mode:'no-cors',
+        })
+        .then((response) => response.text())
+        .catch((error) => {
+                    
+        })
+        .then((body) => {
+            console.log(body)
+        });
+        getData()
+
+    }
 
 </script>
 
