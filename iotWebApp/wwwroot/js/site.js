@@ -22,17 +22,29 @@ const deviceValue = document.getElementById("deviceValue")
 const addBtn = document.getElementById("addBtn")
 const removeBtn = document.getElementById("removeBtn")
 const updateBtn = document.getElementById("updateBtn")
-
+const rootRef = database.ref('/devices/')
 const database = firebase.database();
 
 addBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    database.ref('/devices/' + deviceId.value).set({
+    e.preventDefault(); 
+    rootRef.child(deviceId.value).set({
         device_type: deviceType.value,
         value: deviceValue.value
     })
 })
 
+updateBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const newData = {
+        device_type: deviceType.value,
+        value: deviceValue.value
+    }
+    const updates = {};
+    updates['/devices/' + deviceId.value]
+    database.ref().update(updates);
+})
 
-// Write your JavaScript code.
-
+removeBtn.addEventListener('click', e => {
+    e.preventDefault();
+    rootRef.child(deviceId.value).remove()
+})

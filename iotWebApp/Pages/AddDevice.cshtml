@@ -16,24 +16,20 @@
             <input id="deviceTypeCurtain" type="radio" name="deviceType">
             <label for="deviceTypeCurtain">Curtain</label>
         </div>
-    </>
-    <br><br/>
+    </div>
     
-<button onclick="setData()">Create New</button>
+    <button onclick="setData()">Create New</button>
+
 
 
 </div>
+<input id="deviceName" type="text">
 
     <div id="qresult" style="padding:10%">
 
     </div>
 </div>
 <script>
-    
-
-    
-
-
     async function getData(){
 
         const result = await fetch('https://localhost:44318/Devices/GetDevices')

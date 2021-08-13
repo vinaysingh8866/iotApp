@@ -1,0 +1,262 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    
+    <div style="display:flex; align-items: stretch;" id="deviceContainer">
+        <div class="neumorphicButton">
+            <div style="margin-top:30px; font-size:19px;">Bedroom Light</div>
+            <div style="flex: 1 auto;">
+                <label class="switch" style="margin-top:80px;">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+        <div class="neumorphicButton">
+            <div style="margin-top:10px; font-size:19px;">Thermostat</div>
+            <div style="display:flex;align-content:center;align-items:center;margin-left:35%;margin-top:10%;font-size: 20px;font-weight:bold;">
+                <div class="neumorphicSmallRoundButton">
+                    -
+                </div>
+                <div class="neumorphicSmallRoundButton">
+                    +
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1 class="display-4">Test Form</h1>
+    <form>
+        <label for="deviceId">Device ID</label>
+        <input type="text" name="deviceId" id="deviceId" />
+        <label for="deviceType">Device Type</label>
+        <input type="text" name="deviceType" id="deviceType" />
+        <label for="deviceValue">Value</label>
+        <input type="text" name="deviceValue" id="deviceValue" />
+        <button id="addBtn">Add</button>
+        <button id="updateBtn">Update</button>
+        <button id="removeBtn">Remove</button>
+    </form>
+    <br />
+    <br />
+    <button onclick="setData()">Create New</button>
+    <div id="qresult" style="padding:10%">
+
+    </div>
+
+    
+
+<script>
+    async function getData(){
+        const result = await fetch('https://localhost:44318/Devices/GetDevices')
+        .then((response) =>  
+            response.text()
+            );
+        
+        const deviceContainer = document.getElementById("deviceContainer")
+        const arrayOfDevices = JSON.parse(result);
+        for (let i = 0; i < arrayOfDevices.length; i++) {
+         
+         if(arrayOfDevices[i]["userName"]=='@User.Identity.Name')
+         {
+
+             const deviceTypeValues = arrayOfDevices[i]["deviceType"].split("__");
+
+
+             if(deviceTypeValues[0]=="therm"){
+                 const newDiv = document.createElement("div");
+                 newDiv.className="neumorphicButton";
+                 newDiv.style = "font-size: 20px;font-weight:bold; width:300";
+                 const newText = document.createElement("div");
+                 newText.style = "margin-top:10px; font-size:19px;";
+                 newText.innerHTML = deviceTypeValues[1];
+                 newDiv.appendChild(newText);
+                 deviceContainer.appendChild(newDiv);
+                 console.log( deviceTypeValues[1]);
+             }
+         }
+        }
+        const textArea = document.getElementById("qresult");
+        textArea.innerHTML = result;
+    } 
+    getData();
+    function setData(){
+    fetch(`https://localhost:44318/Devices/AddDeviceDB?name=@User.Identity.Name&type=thermo__BedRoom&url=12`,{
+        mode:'no-cors',
+        })
+        .then((response) => response.text())
+        .catch((error) => {
+                    
+        })
+        .then((body) => {
+            console.log(body)
+        });
+        getData()
+
+    }
+
+</script>
+
+}
+else
+{
+    
+    <canvas id="c" style="width:100%; height:100%"></canvas>
+
+}
+<script>
+			
+function main() {
+  const canvas = document.querySelector('#c');
+  const renderer = new THREE.WebGLRenderer({canvas});
+
+  const fov = 60;
+  const aspect = 2;  // the canvas default
+  const near = 0.4;
+  const far = 200;
+  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  camera.position.set(10, 200, 200);
+
+  const controls = new THREE.OrbitControls(camera, canvas);
+  controls.target.set(0, 10, 0);
+  controls.update();
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('pink');
+
+  {
+    const planeSize = 0;
+
+    const loader = new THREE.TextureLoader();
+    const texture = loader.load('https://threejsfundamentals.org/threejs/resources/images/checker.png');
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.magFilter = THREE.NearestFilter;
+    const repeats = planeSize / 2;
+    texture.repeat.set(repeats, repeats);
+
+    const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
+    const planeMat = new THREE.MeshPhongMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+    });
+    const mesh = new THREE.Mesh(planeGeo, planeMat);
+    mesh.rotation.x = Math.PI * -.5;
+    scene.add(mesh);
+  }
+
+  {
+    const skyColor = 0xB1E1FF;  // light blue
+    const groundColor = 0xB97A20;  // brownish orange
+    const intensity = 1;
+    const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+    scene.add(light);
+  }
+
+  {
+    const color = 0xFFFFFF;
+    const intensity = 1;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(5, 10, 2);
+    scene.add(light);
+    scene.add(light.target);
+  }
+
+  function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
+    const halfSizeToFitOnScreen = sizeToFitOnScreen * 1;
+    const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
+    const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
+    // compute a unit vector that points in the direction the camera is now
+    // in the xz plane from the center of the box
+    const direction = (new THREE.Vector3())
+        .subVectors(camera.position, boxCenter)
+        .multiply(new THREE.Vector3(1, 0, 1))
+        .normalize();
+
+    // move the camera to a position distance units way from the center
+    // in whatever direction the camera was from the center already
+    camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
+
+    // pick some near and far values for the frustum that
+    // will contain the box.
+    camera.near = boxSize / 100;
+    camera.far = boxSize * 100;
+
+    camera.updateProjectionMatrix();
+
+    // point the camera to look at the center of the box
+    camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
+  }
+
+  {
+    const gltfLoader = new THREE.GLTFLoader();
+    gltfLoader.load('https://raw.githubusercontent.com/vinaysingh8866/3dPrintedGun/main/iot.glb', (gltf) => {
+      const root = gltf.scene;
+      scene.add(root);
+      root.rotation.x= 80
+      const clock = new THREE.Clock()
+      const tick = () =>{
+          const elapsedTime = clock.getElapsedTime()
+
+          root.rotation.y = .5*elapsedTime
+          renderer.render(scene,camera)
+          window.requestAnimationFrame(tick)
+
+      }
+      tick()
+      // compute the box that contains all the stuff
+      // from root and below
+      const box = new THREE.Box3().setFromObject(root);
+
+      const boxSize = box.getSize(new THREE.Vector3()).length();
+      const boxCenter = box.getCenter(new THREE.Vector3());
+
+      // set the camera to frame the box
+      frameArea(boxSize * 0.5, boxSize, boxCenter, camera);
+
+      // update the Trackball controls to handle the new size
+      controls.maxDistance = boxSize * 10;
+      controls.target.copy(boxCenter);
+      controls.update();
+    });
+  }
+
+  function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+      renderer.setSize(width, height, false);
+    }
+    return needResize;
+  }
+
+
+
+
+
+  function render() {
+    if (resizeRendererToDisplaySize(renderer)) {
+      const canvas = renderer.domElement;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
+
+    renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+
+  
+
+}
+
+main();
+		</script>

@@ -90,7 +90,7 @@ namespace iotAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<Devices>> AddDeviceDB(String name, String type, String url)
         {
-            Response.Headers.Add("Access-Control-Allow-Origin", "https://localhost:5001");
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
             var Device = new Devices();
             Device.UserName = name;
             Device.deviceType = type;
