@@ -78,7 +78,7 @@
                  newDiv.appendChild(newText);
                  deviceContainer.appendChild(newDiv);
                  const newDiv2 = document.createElement("div");
-                 newDiv2.style = "display:flex;align-content:center;align-items:center;margin-left:35%;margin-top:10%;font-size: 20px;font-weight:bold;"
+                 newDiv2.style = "display:flex;"
                  const newDivRound = document.createElement("div");
                  newDivRound.className = "neumorphicSmallRoundButton";
                  newDivRound.innerHTML = "-";
@@ -90,6 +90,40 @@
                  newDiv.appendChild(newDiv2);
 
              }
+
+
+             if(deviceTypeValues[0]=="light"){
+                 const newDiv = document.createElement("div");
+                 newDiv.className="neumorphicButton";
+                 newDiv.style = "font-size: 20px;font-weight:bold; width:300";
+                 const newText = document.createElement("div");
+                 newText.style = "margin-top:10px; font-size:19px;";
+                 newText.innerHTML = deviceTypeValues[1];
+                 newDiv.appendChild(newText);
+                 deviceContainer.appendChild(newDiv);
+                 const newDiv2 = document.createElement("div");
+                 newDiv2.style = "flex: 1 auto;"
+                 const labl = document.createElement("label");
+                 labl.className = "switch";
+                 labl.style = "margin-top:80px;";
+                 const input = document.createElement("input");
+                 input.type = "checkbox";
+                 const span = document.createElement("span");
+                 span.className = "slider round";
+                 labl.appendChild(input);
+                 labl.appendChild(span);
+                 newDiv2.appendChild(labl)
+                 newDiv.appendChild(newDiv2)
+                 <label class="switch" style="margin-top:80px;">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+
+             }
+
+
+
+
          }
         }
         const textArea = document.getElementById("qresult");
