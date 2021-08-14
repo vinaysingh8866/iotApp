@@ -17,7 +17,7 @@ namespace iotTests
 
 
         ChromeDriver _driver;
-        private string _url = "https://localhost:5001";
+        private string _url = "https://localhost:5001/AddDevice";
 
 
 
@@ -40,7 +40,9 @@ namespace iotTests
         public void AddDevice()
         {
             _driver.Url = _url;
-
+            var text = _driver.FindElementById("deviceName");
+            var button = _driver.FindElementById("addBtn");
+            button.Click();
 
         }
 
