@@ -64,6 +64,7 @@
          if(arrayOfDevices[i]["userName"]=='@User.Identity.Name')
          {
 
+
              const deviceTypeValues = arrayOfDevices[i]["deviceType"].split("__");
 
 
@@ -76,7 +77,18 @@
                  newText.innerHTML = deviceTypeValues[1];
                  newDiv.appendChild(newText);
                  deviceContainer.appendChild(newDiv);
-                 console.log( deviceTypeValues[1]);
+                 const newDiv2 = document.createElement("div");
+                 newDiv2.style = "display:flex;align-content:center;align-items:center;margin-left:35%;margin-top:10%;font-size: 20px;font-weight:bold;"
+                 const newDivRound = document.createElement("div");
+                 newDivRound.className = "neumorphicSmallRoundButton";
+                 newDivRound.innerHTML = "-";
+                 newDiv2.appendChild(newDivRound);
+                 const newDivRound2 = document.createElement("div");
+                 newDivRound2.className = "neumorphicSmallRoundButton";
+                 newDivRound2.innerHTML = "+";
+                 newDiv2.appendChild(newDivRound2);
+                 newDiv.appendChild(newDiv2);
+
              }
          }
         }

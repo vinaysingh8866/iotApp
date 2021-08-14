@@ -23,7 +23,7 @@
 
 
 </div>
-<input id="deviceName" type="text">
+<input id="deviceName" ty>
 
     <div id="qresult" style="padding:10%">
 
@@ -41,7 +41,9 @@
     } 
     
     function setData(){
-    fetch(`https://localhost:44318/Devices/AddDeviceDB?name=12&type=12&url=12`,{
+        const url = 'https://localhost:44318/Devices/AddDeviceDB?name=' + '@User.Identity.Name' + '&type=therm__'+document.getElementById("deviceName").value+'&url=12'
+        console.log(url)
+        fetch(url,{
         mode:'no-cors',
         })
         .then((response) => response.text())
