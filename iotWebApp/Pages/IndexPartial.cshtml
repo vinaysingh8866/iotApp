@@ -5,147 +5,147 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    
-    <div style="display:flex; align-items: stretch;" id="deviceContainer">
-        <div class="neumorphicButton">
-            <div style="margin-top:30px; font-size:19px;">Bedroom Light</div>
-            <div style="flex: 1 auto;">
-                <label class="switch" style="margin-top:80px;">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-            </div>
+       
 
-        </div>
-        <div class="neumorphicButton">
-            <div style="margin-top:10px; font-size:19px;">Thermostat</div>
-            <div style="display:flex;align-content:center;align-items:center;margin-left:35%;margin-top:10%;font-size: 20px;font-weight:bold;">
-                <div class="neumorphicSmallRoundButton">
-                    -
-                </div>
-                <div class="neumorphicSmallRoundButton">
-                    +
-                </div>
-            </div>
-        </div>
-    </div>
-    <h1 class="display-4">Test Form</h1>
-    <form>
-        <label for="deviceId">Device ID</label>
-        <input type="text" name="deviceId" id="deviceId" />
-        <label for="deviceType">Device Type</label>
-        <input type="text" name="deviceType" id="deviceType" />
-        <label for="deviceValue">Value</label>
-        <input type="text" name="deviceValue" id="deviceValue" />
-        <button id="addBtn">Add</button>
-        <button id="updateBtn">Update</button>
-        <button id="removeBtn">Remove</button>
-    </form>
-    <br />
-    <br />
-    <button onclick="setData()">Create New</button>
-    <div id="qresult" style="padding:10%">
 
-    </div>
-
-    
-
-<script>
-    async function getData(){
-        const result = await fetch('https://localhost:44318/Devices/GetDevices')
-        .then((response) =>  
-            response.text()
-            );
+    <div style="grid-template-columns: 50% 50%;" id="deviceContainer">
         
-        const deviceContainer = document.getElementById("deviceContainer")
-        const arrayOfDevices = JSON.parse(result);
-        for (let i = 0; i < arrayOfDevices.length; i++) {
+    </div>
+
+    <br />
+    <br />
+   
+
+    </div>
+    <script>
+            async function getData(){
+                const result = await fetch('https://localhost:44318/Devices/GetDevices')
+                .then((response) =>  
+                    response.text()
+                    );
+        
+                const deviceContainer = document.getElementById("deviceContainer")
+                const arrayOfDevices = JSON.parse(result);
+                for (let i = 0; i < arrayOfDevices.length; i++) {
          
-         if(arrayOfDevices[i]["userName"]=='@User.Identity.Name')
-         {
+                 if(arrayOfDevices[i]["userName"]=='@User.Identity.Name')
+                 {
 
 
-             const deviceTypeValues = arrayOfDevices[i]["deviceType"].split("__");
+                     const deviceTypeValues = arrayOfDevices[i]["deviceType"].split("__");
+                     const idDevice = arrayOfDevices[i]["id"]
+                     console.log(deviceTypeValues[0])
+                     if(deviceTypeValues[0]=="therm"){
+                         const newDiv = document.createElement("div");
+                         newDiv.className="neumorphicButton";
+                         newDiv.style = "font-size: 20px;font-weight:bold; width:300";
+                         const newText = document.createElement("div");
+                         newText.style = "margin-top:10px; font-size:19px;";
+                         newText.innerHTML = deviceTypeValues[1];
+                         newDiv.appendChild(newText);
+                         const newText1 = document.createElement("div");
+                         
+                         newText1.id = idDevice+'';
+                         newDiv.appendChild(newText1);
+                         deviceContainer.appendChild(newDiv);
+                         const newDiv2 = document.createElement("div");
+                         newDiv2.style = "display:flex;align-content:center;align-items:center;margin-left:35%;margin-top:10%;font-size: 20px;font-weight:bold;"
+                         const newDivRound = document.createElement("div");
+                         newDivRound.className = "neumorphicSmallRoundButton";
+                         newDivRound.innerHTML = "-";
+                         newDiv2.appendChild(newDivRound);
+                         const newDivRound2 = document.createElement("div");
+                         newDivRound2.className = "neumorphicSmallRoundButton";
+                         newDivRound.addEventListener("click", function() {
+                             const val = parseInt(document.getElementById(idDevice+'').innerHTML)-1
+                             document.getElementById(idDevice + '').innerHTML = val
+                             firebase.database().ref('/devices/' + idDevice).set({
+                                value: val,
+                                device_type:deviceTypeValues[0] 
+                              });
+                            });
+                         newDivRound2.innerHTML = "+";
+                         newDiv2.appendChild(newDivRound2);
+                         newDiv.appendChild(newDiv2);
+                         newDivRound2.addEventListener("click", function() {
+                             const val = parseInt(document.getElementById(idDevice+'').innerHTML)+1
+                             document.getElementById(idDevice + '').innerHTML = val
+                             firebase.database().ref('/devices/' + idDevice).set({
+                                value: val,
+                                device_type:deviceTypeValues[0] 
+                              });
+                            });
+
+                         var starCountRef = firebase.database().ref('/devices/' + idDevice);
+                            starCountRef.on('value', (snapshot) => {
+                              const data = snapshot.val();
+                              document.getElementById(idDevice + '').innerHTML = data.value
+                            });
+                     }
 
 
-             if(deviceTypeValues[0]=="therm"){
-                 const newDiv = document.createElement("div");
-                 newDiv.className="neumorphicButton";
-                 newDiv.style = "font-size: 20px;font-weight:bold; width:300";
-                 const newText = document.createElement("div");
-                 newText.style = "margin-top:10px; font-size:19px;";
-                 newText.innerHTML = deviceTypeValues[1];
-                 newDiv.appendChild(newText);
-                 deviceContainer.appendChild(newDiv);
-                 const newDiv2 = document.createElement("div");
-                 newDiv2.style = "display:flex;"
-                 const newDivRound = document.createElement("div");
-                 newDivRound.className = "neumorphicSmallRoundButton";
-                 newDivRound.innerHTML = "-";
-                 newDiv2.appendChild(newDivRound);
-                 const newDivRound2 = document.createElement("div");
-                 newDivRound2.className = "neumorphicSmallRoundButton";
-                 newDivRound2.innerHTML = "+";
-                 newDiv2.appendChild(newDivRound2);
-                 newDiv.appendChild(newDiv2);
+                     if(deviceTypeValues[0]=="light"){
+                         console.log("light")
+                         const newDiv = document.createElement("div");
+                         newDiv.className="neumorphicButton";
+                         newDiv.style = "font-size: 20px;font-weight:bold; width:300";
+                         const newText = document.createElement("div");
+                         newText.style = "margin-top:10px; font-size:19px;";
+                         newText.innerHTML = deviceTypeValues[1];
+                         newDiv.appendChild(newText);
+                         deviceContainer.appendChild(newDiv);
+                         const newDiv2 = document.createElement("div");
+                         newDiv2.style = "flex: 1 auto;"
+                         const labl = document.createElement("label");
+                         labl.className = "switch";
+                         labl.style = "margin-top:80px;";
+                         const input = document.createElement("input");
+                         input.type = "checkbox";
+                         input.addEventListener("click", function() {
+                             if(input.checked){
+                                 firebase.database().ref('/devices/' + idDevice).set({
+                                    value: 1,
+                                    device_type:deviceTypeValues[0] 
+                                  });
+                             }
+                             else{
+                                 firebase.database().ref('/devices/' + idDevice).set({
+                                    value: 0,
+                                    device_type:deviceTypeValues[0] 
+                                  });
+                             }
+                            });
+                         const span = document.createElement("span");
+                         span.className = "slider round";
+                         labl.appendChild(input);
+                         labl.appendChild(span);
+                         newDiv2.appendChild(labl)
+                         newDiv.appendChild(newDiv2)
+                         
 
-             }
-
-
-             if(deviceTypeValues[0]=="light"){
-                 const newDiv = document.createElement("div");
-                 newDiv.className="neumorphicButton";
-                 newDiv.style = "font-size: 20px;font-weight:bold; width:300";
-                 const newText = document.createElement("div");
-                 newText.style = "margin-top:10px; font-size:19px;";
-                 newText.innerHTML = deviceTypeValues[1];
-                 newDiv.appendChild(newText);
-                 deviceContainer.appendChild(newDiv);
-                 const newDiv2 = document.createElement("div");
-                 newDiv2.style = "flex: 1 auto;"
-                 const labl = document.createElement("label");
-                 labl.className = "switch";
-                 labl.style = "margin-top:80px;";
-                 const input = document.createElement("input");
-                 input.type = "checkbox";
-                 const span = document.createElement("span");
-                 span.className = "slider round";
-                 labl.appendChild(input);
-                 labl.appendChild(span);
-                 newDiv2.appendChild(labl)
-                 newDiv.appendChild(newDiv2)
-                 <label class="switch" style="margin-top:80px;">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-
-             }
-
-
-
-
-         }
-        }
-        const textArea = document.getElementById("qresult");
-        textArea.innerHTML = result;
-    } 
-    getData();
-    function setData(){
-    fetch(`https://localhost:44318/Devices/AddDeviceDB?name=@User.Identity.Name&type=thermo__BedRoom&url=12`,{
-        mode:'no-cors',
-        })
-        .then((response) => response.text())
-        .catch((error) => {
+                     }
+                 }
+                }
+                
+            } 
+            getData();
+            function setData(){
+            fetch(`https://localhost:44318/Devices/AddDeviceDB?name=@User.Identity.Name&type=thermo__BedRoom&url=12`,{
+                mode:'no-cors',
+                })
+                .then((response) => response.text())
+                .catch((error) => {
                     
-        })
-        .then((body) => {
-            console.log(body)
-        });
-        getData()
+                })
+                .then((body) => {
+                    console.log(body)
+                });
+                getData();
 
-    }
+            }
 
-</script>
+        </script>
+ 
 
 }
 else
@@ -240,7 +240,7 @@ function main() {
 
   {
     const gltfLoader = new THREE.GLTFLoader();
-    gltfLoader.load('https://raw.githubusercontent.com/vinaysingh8866/3dPrintedGun/main/iot.glb', (gltf) => {
+    gltfLoader.load('https://github.com/vinaysingh8866/ChaliceBlog/blob/master/iot.glb?raw=true', (gltf) => {
       const root = gltf.scene;
       scene.add(root);
       root.rotation.x= 80

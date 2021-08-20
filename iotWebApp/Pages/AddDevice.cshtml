@@ -12,10 +12,7 @@
             <input id="deviceTypeThermostat" type="radio" name="deviceType">
             <label for="deviceTypeThermostat">Thermostat</label>
         </div>
-        <div>
-            <input id="deviceTypeCurtain" type="radio" name="deviceType">
-            <label for="deviceTypeCurtain">Curtain</label>
-        </div>
+        
     </div>
     
     
@@ -24,7 +21,7 @@
 
     </div>
     <input id="deviceName" type="text">
-    <button id="addBtn" onclick="setData()">Create New</button>
+    <button id="add" onclick="setData()">Create New</button>
     <div id="qresult" style="padding:10%">
 
     </div>
@@ -40,8 +37,20 @@
         textArea.innerHTML = result;
     } 
     
-    function setData(){
-        const url = 'https://localhost:44318/Devices/AddDeviceDB?name=' + '@User.Identity.Name' + '&type=therm__'+document.getElementById("deviceName").value+'&url=12'
+    async function setData(){
+        const rLight = document.getElementById('deviceTypeLight')
+        const rTherm = document.getElementById('deviceTypeThermostat')
+        var type = 'light'
+
+        if (rLight.checked) {
+            type  = 'light';
+                    
+            }
+        if (rTherm.checked) {
+        type  = 'therm';
+                
+        }
+        const url = 'https://localhost:44318/Devices/AddDeviceDB?name=' + '@User.Identity.Name' + '&type='+type+'__'+document.getElementById("deviceName").value+'&url=12'
         console.log(url)
         fetch(url,{
         mode:'no-cors',
@@ -51,9 +60,25 @@
                     
         })
         .then((body) => {
-            console.log(body)
+            
         });
-        getData()
+        
+
+        
+       
+        const result = await fetch('https://localhost:44318/Devices/GetDevices')
+        .then((response) =>  
+            response.text());
+        const arrayOs = JSON.parse(result);
+        const id = arrayOs[arrayOs.length-1]['id']
+        const rootRf = database.ref('/devices/')
+        
+        rootRf.child(id+1).set({
+        device_type: type,
+        value: 0
+        })
+         
+        
 
     }
 
