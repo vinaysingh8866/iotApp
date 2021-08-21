@@ -16,7 +16,7 @@
     <br />
    
 
-    </div>
+    
     <script>
             async function getData(){
                 const result = await fetch('https://localhost:44318/Devices/GetDevices')
@@ -240,7 +240,7 @@ function main() {
 
   {
     const gltfLoader = new THREE.GLTFLoader();
-    gltfLoader.load('https://github.com/vinaysingh8866/ChaliceBlog/blob/master/iot.glb?raw=true', (gltf) => {
+    gltfLoader.load('https://raw.githubusercontent.com/vinaysingh8866/ChaliceBlog/master/iot.glb', (gltf) => {
       const root = gltf.scene;
       scene.add(root);
       root.rotation.x= 80
